@@ -11,6 +11,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
+	k8sLabels "k8s.io/apimachinery/pkg/labels"
 
 	"github.com/cilium/cilium/pkg/backoff"
 	ipamOption "github.com/cilium/cilium/pkg/ipam/option"
@@ -180,6 +181,16 @@ func WaitForNodeInformation(ctx context.Context, k8sGetter k8sGetter) error {
 		}
 
 		node.SetLabels(n.Labels)
+
+		optOutLabelSelector, err := k8sLabels.Parse("node-role.kubernetes.io/control-plane")
+		if err != nil {
+			log.WithError(err).Warning("failed to parse opt-out label selector")
+		}
+		if optOutLabelSelector.Matches(k8sLabels.Set(n.Labels)) {
+			log.Info("Opting out on WireGuard encryption for local node")
+			n.WireguardOptOutEncryptNode = true
+			node.SetWireguardOptOutEncryptNode(n.WireguardOptOutEncryptNode)
+		}
 
 		node.SetK8sExternalIPv4(n.GetExternalIP(false))
 		node.SetK8sExternalIPv6(n.GetExternalIP(true))

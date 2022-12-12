@@ -1131,7 +1131,7 @@ func newDaemon(ctx context.Context, cleaner *daemonCleanup,
 	}
 
 	// Must occur after d.allocateIPs(), see GH-14245 and its fix.
-	d.nodeDiscovery.StartDiscovery()
+	d.nodeDiscovery.StartDiscovery() // pubkey announced here
 
 	// Annotation of the k8s node must happen after discovery of the
 	// PodCIDR range and allocation of the health IPs.

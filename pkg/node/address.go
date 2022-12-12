@@ -756,6 +756,16 @@ func GetWireguardPubKey() string {
 	return localNode.Get().WireguardPubKey
 }
 
+func GetWireguardOptOutEncryptNode() bool {
+	return localNode.Get().WireguardOptOutEncryptNode
+}
+
+func SetWireguardOptOutEncryptNode(b bool) {
+	localNode.Update(func(node *types.Node) {
+		node.WireguardOptOutEncryptNode = b
+	})
+}
+
 // SetEndpointHealthIPv4 sets the IPv4 cilium-health endpoint address.
 func SetEndpointHealthIPv4(ip net.IP) {
 	localNode.Update(func(n *types.Node) {

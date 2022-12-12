@@ -244,6 +244,7 @@ func (n *NodeDiscovery) fillLocalNode() {
 	n.localNode.WireguardPubKey = node.GetWireguardPubKey()
 	n.localNode.Labels = node.GetLabels()
 	n.localNode.NodeIdentity = uint32(identity.ReservedIdentityHost)
+	n.localNode.WireguardOptOutEncryptNode = node.GetWireguardOptOutEncryptNode()
 
 	if node.GetK8sExternalIPv4() != nil {
 		n.localNode.IPAddresses = append(n.localNode.IPAddresses, nodeTypes.Address{
@@ -286,6 +287,7 @@ func (n *NodeDiscovery) fillLocalNode() {
 			IP:   node.GetK8sExternalIPv6(),
 		})
 	}
+
 }
 
 func (n *NodeDiscovery) updateLocalNode() {
@@ -513,8 +515,11 @@ func (n *NodeDiscovery) mutateNodeResource(nodeResource *ciliumv2.CiliumNode) er
 		}
 	}
 
-	if option.Config.EnableIPSec || (option.Config.EnableWireguard && option.Config.EncryptNode) {
+	// Make WireguardOptOutEncryptNode a try state value: true, false, uninitliazed
+	if option.Config.EnableIPSec || (option.Config.EnableWireguard && option.Config.EncryptNode && !n.localNode.WireguardOptOutEncryptNode) {
 		nodeResource.Spec.Encryption.Key = int(node.GetEncryptKeyIndex())
+	} else {
+		nodeResource.Spec.Encryption.Key = 0
 	}
 
 	nodeResource.Spec.HealthAddressing.IPv4 = ""

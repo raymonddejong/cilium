@@ -232,6 +232,8 @@ type Node struct {
 
 	// WireguardPubKey is the WireGuard public key of this node
 	WireguardPubKey string
+
+	WireguardOptOutEncryptNode bool // overrides option.Config.EncryptNode
 }
 
 // Fullname returns the node's full name including the cluster name if a
