@@ -661,6 +661,8 @@ data:
 
 {{- if and .Values.pprof .Values.pprof.enabled }}
   pprof: {{ .Values.pprof.enabled | quote }}
+  pprof-address: {{ .Values.pprof.address | quote }}
+  pprof-port: {{ .Values.pprof.port | quote }}
 {{- end }}
 {{- if .Values.logSystemLoad }}
   log-system-load: {{ .Values.logSystemLoad | quote }}

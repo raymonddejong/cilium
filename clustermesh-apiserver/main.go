@@ -266,6 +266,9 @@ func runApiserver() error {
 	flags.Bool(option.PProf, false, "Enable serving the pprof debugging API")
 	option.BindEnv(vp, option.PProf)
 
+	flags.String(option.PProfAddress, defaults.PprofAddressAPIServer, "Address that the pprof listens on")
+	option.BindEnv(vp, option.PProfAddress)
+
 	flags.Int(option.PProfPort, defaults.PprofPortAPIServer, "Port that the pprof listens on")
 	option.BindEnv(vp, option.PProfPort)
 
@@ -643,7 +646,7 @@ func startServer(startCtx hive.HookContext, clientset k8sClient.Clientset, servi
 	}()
 
 	if option.Config.PProf {
-		pprof.Enable(option.Config.PProfPort)
+		pprof.Enable(option.Config.PProfAddress, option.Config.PProfPort)
 	}
 
 	log.Info("Initialization complete")

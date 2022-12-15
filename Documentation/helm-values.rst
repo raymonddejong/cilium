@@ -1665,10 +1665,18 @@
      - The agent can be put into one of the three policy enforcement modes: default, always and never. ref: https://docs.cilium.io/en/stable/policy/intro/#policy-enforcement-modes
      - string
      - ``"default"``
+   * - pprof.address
+     - Configure pprof listen address for cilum components
+     - string
+     - ``"localhost"``
    * - pprof.enabled
-     - Enable Go pprof debugging
+     - Enable pprof for cilium components
      - bool
      - ``false``
+   * - pprof.port
+     - Configure pprof listen port for cilum components
+     - int
+     - ``6060``
    * - preflight.affinity
      - Affinity for cilium-preflight
      - object

@@ -1495,8 +1495,12 @@ nodePort:
 policyEnforcementMode: "default"
 
 pprof:
-  # -- Enable Go pprof debugging
+  # -- Enable pprof for cilium components
   enabled: false
+  # -- Configure pprof listen address for cilum components
+  address: localhost
+  # -- Configure pprof listen port for cilum components
+  port: 6060
 
 # -- Configure prometheus metrics on the configured port at /metrics
 prometheus:
